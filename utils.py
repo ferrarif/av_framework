@@ -116,19 +116,8 @@ def __get_search_results(keywords_):
     return __get_search_df_from_json(function,keywords_,dictkey)
 pass
 
-print(__get_df_daily('AAPL','full',store_=True))
-sleep(12)
-print(__get_df_daily_adj('AAPL','full'))
-sleep(12)
-print(__get_df_intraday('AAPL','full','5min'))
-sleep(12)
-print(__get_df_weekly('AAPL','full'))
-sleep(12)
-print(__get_df_weekly_adj('AAPL','full'))
-sleep(12)
-print(__get_df_monthly('AAPL','full'))
-sleep(12)
-print(__get_df_monthly_adj('AAPL','full'))
-sleep(12)
-print(__get_search_results('Apple'))
-    
+def __get_df_multi(fun_,tickers_,*args):
+    for ticker in tickers_:
+        fun_(ticker,*args)
+        sleep(12)
+pass
