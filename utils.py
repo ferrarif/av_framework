@@ -13,28 +13,12 @@ def __get_request(function_,symbol_=None,outputsize_=None,interval_=None,
                   datatype_=None,from_currency_=None,to_currency_=None,
                   from_symbol_=None,to_symbol_=None,market_=None,
                   keywords_=None):
-    fun_params=[function_,
-                symbol_,
-                outputsize_,
-                interval_,
-                datatype_,
-                from_currency_,
-                to_currency_,
-                from_symbol_,
-                to_symbol_,
-                market_,
+    fun_params=[function_,symbol_,outputsize_,interval_,datatype_,
+                from_currency_,to_currency_,from_symbol_,to_symbol_,market_,
                 keywords_]
-    api_params=['function={}',
-                '&symbol={}',
-                '&outputsize={}',
-                '&interval={}',
-                '&datatype={}',
-                '&from_currency={}',
-                '&to_currency={}',
-                '&from_symbol={}',
-                '&to_symbol={}',
-                '&market{}',
-                '&keywords={}']
+    api_params=['function={}','&symbol={}','&outputsize={}','&interval={}',
+                '&datatype={}','&from_currency={}','&to_currency={}',
+                '&from_symbol={}','&to_symbol={}','&market{}','&keywords={}']
     query=[api_params[i].format(fun_params[i])
            if fun_params[i] is not None else ''
            for i in range(len(fun_params))]
@@ -51,9 +35,11 @@ def __get_eq_df_from_json(function_,ticker_,outputsize_,interval_,dictkey_,
                               datatype_='json',
                               outputsize_=outputsize_).json()
     df=pd.DataFrame.from_dict(json_string[dictkey_],orient='index')
+    df.index.name='date'
+    df.index=pd.to_datetime(df.index)
     df.columns=[col_name.split(' ')[1] for col_name in df.columns.values]
     if store_:
-        df.to_csv('db//{}.csv'.format(ticker_))
+        df.to_csv('db//{}.csv'.format(ticker_),index_label='date')
     return df
 pass
 
